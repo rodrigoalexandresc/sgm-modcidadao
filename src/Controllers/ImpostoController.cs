@@ -16,6 +16,17 @@ namespace ModCidadao.Controllers {
             this.iPTURepository = iPTURepository;
         }
 
+        [HttpGet("testedb")]
+        public async Task<IActionResult> TesteDb() 
+        {
+            var db = Environment.GetEnvironmentVariable("DB_USER") +  ';' + 
+            Environment.GetEnvironmentVariable("DB_PASS") + ";" +
+             Environment.GetEnvironmentVariable("DB_NAME") + ";" +
+             Environment.GetEnvironmentVariable("INSTANCE_CONNECTION_NAME");
+
+            return Ok(db);
+        }
+
         [HttpPost("consulta")]
         public async Task<IActionResult> Consulta(ImpostoQuery consulta) {
 
