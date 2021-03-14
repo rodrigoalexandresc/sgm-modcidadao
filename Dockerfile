@@ -10,3 +10,4 @@ FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app
 COPY --from=build /app .
 ENTRYPOINT ["dotnet", "ModCidadao.dll"]
+EXPOSE 8080
