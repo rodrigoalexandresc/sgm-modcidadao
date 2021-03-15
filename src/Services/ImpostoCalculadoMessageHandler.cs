@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using ModCidadao.Repositories;
 using ModCidadao.Models;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 
 namespace ModCidadao.Services
 {
@@ -35,10 +36,13 @@ namespace ModCidadao.Services
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
+            var scopeDI = scopeFactory.CreateScope();
+            var kafkaConfig = scopeDI.ServiceProvider.GetRequiredService<IOptions<KafkaConfig>>();
+
             var conf = new ConsumerConfig
             {
                 GroupId = "stur_imposto_group",
-                BootstrapServers = "localhost:9092",
+                BootstrapServers = kafkaConfig.Value.BootstrapServers,
                 AutoOffsetReset = AutoOffsetReset.Earliest,
             };
 
@@ -59,7 +63,6 @@ namespace ModCidadao.Services
                         if (!string.IsNullOrEmpty(message.Message.Value)) {
                             Console.Write($"KAFKA: {message.Message.Value}");                    
                             var IPTU = JsonSerializer.Deserialize<IPTU>(message.Message.Value);
-                            //ToDo : chamar service para escolher se grava ou atualiza o valor do imposto
                             await iPTUService.AtualizarImposto(IPTU);
                         }                            
                     }
