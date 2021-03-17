@@ -14,7 +14,6 @@ namespace ModCidadao.Services
     public class ImpostoCalculadoService : BackgroundService
     {
         const string topico = "stur-imposto-calculado";
-        private IConsumer<Ignore, string> kafkaConsumer;
 
         private readonly IServiceScopeFactory scopeFactory;
 
@@ -23,18 +22,22 @@ namespace ModCidadao.Services
             this.scopeFactory = scopeFactory;
         } 
 
-        protected override Task ExecuteAsync(CancellationToken stoppingToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
-            new Thread(() => StartConsumerLoop(stoppingToken)).Start();
+            await ExecuteAsync(cancellationToken);
 
+            //return Task.CompletedTask;
+        }
+
+        public Task StopAsync(CancellationToken cancellationToken)
+        {
             return Task.CompletedTask;
-        }        
+        }
 
-        protected void StartConsumerLoop(CancellationToken stoppingToken)
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             var scopeDI = scopeFactory.CreateScope();
             var kafkaConfig = scopeDI.ServiceProvider.GetRequiredService<IOptions<KafkaConfig>>();
-            var iPTUService = scopeDI.ServiceProvider.GetRequiredService<IPTUService>();
 
             var conf = new ConsumerConfig
             {
@@ -43,53 +46,36 @@ namespace ModCidadao.Services
                 AutoOffsetReset = AutoOffsetReset.Earliest,
             };
 
-            this.kafkaConsumer = new ConsumerBuilder<Ignore, string>(conf).Build();
-
-            kafkaConsumer.Subscribe(topico);
-            Console.WriteLine($"    Conectando ao tópico: {topico}              " );
-
-            while (!stoppingToken.IsCancellationRequested)
+            using (var c = new ConsumerBuilder<Ignore, string>(conf).Build())
             {
+                c.Subscribe(topico);
+                var cts = new CancellationTokenSource();
+
+                var iPTUService = scopeFactory.CreateScope().ServiceProvider.GetRequiredService<IPTUService>();
                 try
                 {
-                    var consumo = this.kafkaConsumer.Consume(stoppingToken);
-                    
-                    if (!string.IsNullOrEmpty(consumo.Message.Value)) {
-                        Console.Write($"KAFKA: {consumo.Message.Value}");                    
-                        var IPTU = JsonSerializer.Deserialize<IPTU>(consumo.Message.Value);
-                        iPTUService.AtualizarImposto(IPTU);
-                    }                            
+                    while (!stoppingToken.IsCancellationRequested)                    
+                    {
+                        Console.BackgroundColor = ConsoleColor.White;
+                        Console.ForegroundColor = ConsoleColor.Black;
+                        Console.WriteLine($"    Conectando ao tópico: {topico}              " );
+                        var message = c.Consume(cts.Token);                        
+                        if (!string.IsNullOrEmpty(message.Message.Value)) {
+                            Console.Write($"KAFKA: {message.Message.Value}");                    
+                            var IPTU = JsonSerializer.Deserialize<IPTU>(message.Message.Value);
+                            await iPTUService.AtualizarImposto(IPTU);
+                        }                            
+                    }
                 }
                 catch (OperationCanceledException)
                 {
-                    Console.WriteLine("Kafka operação cancelada");
-                    break;
+                    c.Close();
                 }
-                catch (ConsumeException e)
-                {
-                    // Consumer errors should generally be ignored (or logged) unless fatal.
-                    Console.WriteLine($"Consume error: {e.Error.Reason}");
-
-                    if (e.Error.IsFatal)
-                    {
-                        // https://github.com/edenhill/librdkafka/blob/master/INTRODUCTION.md#fatal-consumer-errors
-                        break;
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine($"Unexpected error: {e}");
-                    break;
+                catch(Exception) {
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("Problema ao conectar no Kafka");
                 }
             }
-        }
-    
-        public override void Dispose()
-        {
-            this.kafkaConsumer.Close(); // Commit offsets and leave the group cleanly.
-            this.kafkaConsumer.Dispose();
-
-            base.Dispose();
         }
     }
 }

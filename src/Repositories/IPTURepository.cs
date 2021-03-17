@@ -12,18 +12,18 @@ namespace ModCidadao.Repositories {
             this.dbContext = dbContext;
         }
 
-        public void Add(IPTU iPTU) {
+        public async Task Add(IPTU iPTU) {
             dbContext.IPTUs.Add(iPTU);
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
         }        
 
-        public void Update(IPTU iPTU) {
+        public async Task Update(IPTU iPTU) {
             var reg = dbContext.Update(iPTU);
-            dbContext.SaveChanges();
+            await dbContext.SaveChangesAsync();
         }
 
-        public IPTU GetByKey(string chave) {
-            return dbContext.IPTUs.FirstOrDefault(w => w.Chave == chave);
+        public async Task<IPTU> GetByKey(string chave) {
+            return await dbContext.IPTUs.FirstOrDefaultAsync(w => w.Chave == chave);
         }
 
         public async Task<IList<IPTU>> GetByImpostoQuery(ImpostoQuery impostoQuery) {
