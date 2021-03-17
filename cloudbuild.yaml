@@ -4,23 +4,11 @@ steps:
   # push the container image to Container Registry
   - name: "gcr.io/cloud-builders/docker"
     args: ["push", "gcr.io/$PROJECT_ID/sgm-modcidadao"]
-  # Deploy container image to Cloud Run
-  - name: "gcr.io/cloud-builders/gcloud"
-    args:
-      [
-    "beta",
-    "run",
-    "deploy",
-    "--allow-unauthenticated",
-    "$PROJECT_ID",
-    "--image",
-    "gcr.io/$PROJECT_ID/sgm-modcidadao",
-    "--region",
-    "us-central1",
-    "--platform",
-    "managed",
-    "--memory",
-    "128Mi"
-    ]
+  # Deploy container image to GKE
+  - name: 'gcr.io/cloud-builders/kubectl'
+    args: ['set', 'image', 'deployment/sgm-modcidado-k', 'my-container=gcr.io/$PROJECT_ID/sgm-modcidadao']
+    env:
+    - 'CLOUDSDK_COMPUTE_ZONE=us-east4-b'
+    - 'CLOUDSDK_CONTAINER_CLUSTER=sgm-modcidadao-cluster1'        
 images:
   - "gcr.io/$PROJECT_ID/sgm-modcidadao"

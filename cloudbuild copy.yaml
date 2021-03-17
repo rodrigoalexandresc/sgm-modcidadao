@@ -1,0 +1,26 @@
+steps:
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["build", "-t", "gcr.io/$PROJECT_ID/sgm-modcidadao", "."]
+  # push the container image to Container Registry
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/$PROJECT_ID/sgm-modcidadao"]
+  # Deploy container image to Cloud Run
+  - name: "gcr.io/cloud-builders/gcloud"
+    args:
+      [
+    "beta",
+    "run",
+    "deploy",
+    "--allow-unauthenticated",
+    "$PROJECT_ID",
+    "--image",
+    "gcr.io/$PROJECT_ID/sgm-modcidadao",
+    "--region",
+    "us-central1",
+    "--platform",
+    "managed",
+    "--memory",
+    "128Mi"
+    ]
+images:
+  - "gcr.io/$PROJECT_ID/sgm-modcidadao"
