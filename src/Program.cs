@@ -18,9 +18,9 @@ namespace ModCidadao
                 {
                     webBuilder.UseStartup<Startup>();
                     //.UseUrls("http://*:5001");
-                })
-                .ConfigureServices(s => {
-                    s.AddHostedService<ImpostoCalculadoService>();
                 });
+                // .ConfigureServices(s => {
+                //     s.AddHostedService<ImpostoCalculadoService>();
+                // });
     }
 }

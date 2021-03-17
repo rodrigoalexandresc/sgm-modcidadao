@@ -26,6 +26,8 @@ namespace ModCidadao
             services.AddOptions();
             services.Configure<KafkaConfig>(Configuration.GetSection("Kafka"));
 
+            services.AddHostedService<ImpostoCalculadoService>();
+
             services.AddControllers().AddJsonOptions(options => {
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
             });
