@@ -10,12 +10,12 @@ namespace ModCidadao.Services {
             this.iPTURepository = iPTURepository;
         }
 
-        public async Task AtualizarImposto(IPTU iPTU) {
-            var iPTUGravado = await iPTURepository.GetByKey(iPTU.Chave);
+        public void AtualizarImposto(IPTU iPTU) {
+            var iPTUGravado = iPTURepository.GetByKey(iPTU.Chave);
             if (iPTUGravado == null) 
-                await this.iPTURepository.Add(iPTU);            
+                this.iPTURepository.Add(iPTU);            
             else 
-                await this.iPTURepository.Update(iPTU);
+                this.iPTURepository.Update(iPTU);
         }
     }
 }
