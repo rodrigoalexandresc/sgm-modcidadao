@@ -56,8 +56,8 @@ namespace ModCidadao.Services
                     
                     if (!string.IsNullOrEmpty(consumo.Message.Value)) {
                         Console.Write($"KAFKA: {consumo.Message.Value}");                    
-                        //var IPTU = JsonSerializer.Deserialize<IPTU>(consumo.Message.Value);
-                        //iPTUService.AtualizarImposto(IPTU);
+                        var IPTU = JsonSerializer.Deserialize<IPTU>(consumo.Message.Value);
+                        iPTUService.AtualizarImposto(IPTU);
                     }                            
                 }
                 catch (OperationCanceledException)
