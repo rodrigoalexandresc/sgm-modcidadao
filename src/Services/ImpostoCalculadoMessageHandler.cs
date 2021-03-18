@@ -52,6 +52,7 @@ namespace ModCidadao.Services
             {
                 try
                 {
+                    Console.WriteLine($"    Conectando ao tópico: {topico}              " );                    
                     var consumo = this.kafkaConsumer.Consume(stoppingToken);
                     
                     if (!string.IsNullOrEmpty(consumo.Message.Value)) {
@@ -82,10 +83,12 @@ namespace ModCidadao.Services
                     break;
                 }
             }
+            Console.WriteLine($" KAFKA SAIR DO TÓPICO!!!!!!!   " );
         }
     
         public override void Dispose()
         {
+            Console.WriteLine($" KAFKA DISPOSE!!!!!!!   " );
             this.kafkaConsumer.Close(); // Commit offsets and leave the group cleanly.
             this.kafkaConsumer.Dispose();
 
