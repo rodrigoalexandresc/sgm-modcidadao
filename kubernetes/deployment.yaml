@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    app: sgm-modcidado-k
+    app: sgm-modcidado-1
   managedFields:
     - apiVersion: apps/v1
       fieldsType: FieldsV1
@@ -47,7 +47,7 @@ metadata:
               'f:terminationGracePeriodSeconds': {}
       manager: GoogleCloudConsole
       operation: Update
-      time: '2021-03-17T17:00:18Z'
+      time: '2021-03-21T19:00:44Z'
     - apiVersion: apps/v1
       fieldsType: FieldsV1
       fieldsV1:
@@ -81,14 +81,14 @@ metadata:
           'f:updatedReplicas': {}
       manager: kube-controller-manager
       operation: Update
-      time: '2021-03-17T17:05:35Z'
-  name: sgm-modcidado-k
+      time: '2021-03-21T19:06:15Z'
+  name: sgm-modcidado-1
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: sgm-modcidado-k
+      app: sgm-modcidado-1
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -99,7 +99,7 @@ spec:
       annotations:
         seccomp.security.alpha.kubernetes.io/pod: runtime/default
       labels:
-        app: sgm-modcidado-k
+        app: sgm-modcidado-1
     spec:
       containers:
         - image: >-
@@ -124,7 +124,7 @@ apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
   labels:
-    app: sgm-modcidado-k
+    app: sgm-modcidado-1
   managedFields:
     - apiVersion: autoscaling/v2beta1
       fieldsType: FieldsV1
@@ -143,7 +143,7 @@ metadata:
             'f:name': {}
       manager: GoogleCloudConsole
       operation: Update
-      time: '2021-03-17T17:00:18Z'
+      time: '2021-03-21T19:00:44Z'
     - apiVersion: autoscaling/v1
       fieldsType: FieldsV1
       fieldsV1:
@@ -159,8 +159,8 @@ metadata:
           'f:lastScaleTime': {}
       manager: vpa-recommender
       operation: Update
-      time: '2021-03-17T23:27:34Z'
-  name: sgm-modcidado-k-hpa-eikk
+      time: '2021-03-21T19:06:29Z'
+  name: sgm-modcidado-1-hpa-qd3k
   namespace: default
 spec:
   maxReplicas: 5
@@ -173,66 +173,4 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: sgm-modcidado-k
----
-apiVersion: v1
-kind: Service
-metadata:
-  annotations:
-    cloud.google.com/neg: '{"ingress":true}'
-  finalizers:
-    - service.kubernetes.io/load-balancer-cleanup
-  labels:
-    app: sgm-modcidado-k
-  managedFields:
-    - apiVersion: v1
-      fieldsType: FieldsV1
-      fieldsV1:
-        'f:metadata':
-          'f:labels':
-            .: {}
-            'f:app': {}
-        'f:spec':
-          'f:externalTrafficPolicy': {}
-          'f:ports':
-            .: {}
-            'k:{"port":8080,"protocol":"TCP"}':
-              .: {}
-              'f:port': {}
-              'f:protocol': {}
-              'f:targetPort': {}
-          'f:selector':
-            .: {}
-            'f:app': {}
-          'f:sessionAffinity': {}
-          'f:type': {}
-      manager: GoogleCloudConsole
-      operation: Update
-      time: '2021-03-17T17:07:02Z'
-    - apiVersion: v1
-      fieldsType: FieldsV1
-      fieldsV1:
-        'f:metadata':
-          'f:finalizers':
-            .: {}
-            'v:"service.kubernetes.io/load-balancer-cleanup"': {}
-        'f:status':
-          'f:loadBalancer':
-            'f:ingress': {}
-      manager: kube-controller-manager
-      operation: Update
-      time: '2021-03-17T17:07:39Z'
-  name: sgm-modcidado-k-service
-  namespace: default
-spec:
-  clusterIP: 10.97.1.247
-  externalTrafficPolicy: Cluster
-  ports:
-    - nodePort: 32570
-      port: 8080
-      protocol: TCP
-      targetPort: 8080
-  selector:
-    app: sgm-modcidado-k
-  sessionAffinity: None
-  type: LoadBalancer
+    name: sgm-modcidado-1

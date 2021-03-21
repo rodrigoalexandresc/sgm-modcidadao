@@ -57,8 +57,8 @@ namespace ModCidadao.Services
                     
                     if (!string.IsNullOrEmpty(consumo.Message.Value)) {
                         Console.Write($"KAFKA: {consumo.Message.Value}");                    
-                        // var IPTU = JsonSerializer.Deserialize<IPTU>(consumo.Message.Value);
-                        // iPTUService.AtualizarImposto(IPTU);
+                        var IPTU = JsonSerializer.Deserialize<IPTU>(consumo.Message.Value);
+                        iPTUService.AtualizarImposto(IPTU);
                     }                            
                 }
                 catch (OperationCanceledException)
@@ -80,9 +80,9 @@ namespace ModCidadao.Services
                 catch (Exception e)
                 {
                     Console.WriteLine($"Unexpected error: {e}");
-                    break;
+                    break; //TO DO ver a possibilidade de mudar para continue
                 }
-            }
+            }            
             Console.WriteLine($" KAFKA SAIR DO TÓPICO!!!!!!!   " );
         }
     
