@@ -33,15 +33,18 @@ namespace ModCidadao.Controllers {
             if (!consulta.IsValid()) {
                 return BadRequest(consulta.Errors());
             }
-            try
-            {
+
                 var retorno = await iPTURepository.GetByImpostoQuery(consulta);
                 return Ok(retorno);                
-            }
-            catch (System.Exception ex)
-            {
-                return BadRequest($"${ex.Message} \n ${ex.StackTrace}");
-            }
+
+            // try
+            // {
+
+            // }
+            // catch (System.Exception ex)
+            // {
+            //     return BadRequest($"${ex.Message} \n ${ex.StackTrace}");
+            // }
 
         } 
     }
