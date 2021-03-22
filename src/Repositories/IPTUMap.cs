@@ -10,6 +10,7 @@ namespace ModCidadao.Repositories {
             entityBuilder.ToTable("iptu");
 
             entityBuilder.Property(x => x.Id).HasColumnName("id");
+            entityBuilder.Property(x => x.CPFouCNPJ).HasColumnName("cpfoucnpj");
             entityBuilder.Property(x => x.DataVencimento).HasColumnName("datavencimento");
             entityBuilder.Property(x => x.AreaConstruida).HasColumnName("areaconstruida");
             entityBuilder.Property(x => x.AreaTerreno).HasColumnName("areaterreno");

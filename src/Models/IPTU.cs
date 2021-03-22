@@ -10,6 +10,7 @@ namespace ModCidadao.Models {
         }
 
         public int Id { get; set; }
+        public string CPFouCNPJ { get; set; }
         public decimal Valor { get; set; }
         public string InscricaoImovel { get; set; }
         public DateTime DataVencimento { get; set; }

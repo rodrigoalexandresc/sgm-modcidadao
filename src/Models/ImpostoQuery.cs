@@ -9,8 +9,8 @@ namespace ModCidadao.Models {
 
         public bool IsValid() {
             return !string.IsNullOrEmpty(CPFouCNPJ)
-                && !string.IsNullOrEmpty(InscricaoImovel)
-                && DataConsulta != null;
+                || !string.IsNullOrEmpty(InscricaoImovel)
+                || DataConsulta.HasValue;
         }
 
         public IEnumerable<string> Errors() {
@@ -18,14 +18,7 @@ namespace ModCidadao.Models {
 
             var errors = new List<string>();
 
-            if (string.IsNullOrEmpty(CPFouCNPJ))
-                errors.Add("CPF ou CNPJ inválido");
-
-            if (string.IsNullOrEmpty(InscricaoImovel)) 
-                errors.Add("Inscrição do imóvel inválida");
-
-            if (DataConsulta == null)
-                errors.Add("Data de consulta não preenchida");
+            errors.Add("Preencha pelo um dos campos para busca");
 
             return errors;            
         }

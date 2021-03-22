@@ -34,8 +34,8 @@ namespace ModCidadao.Controllers {
                 return BadRequest(consulta.Errors());
             }
 
-                var retorno = await iPTURepository.GetByImpostoQuery(consulta);
-                return Ok(retorno);                
+            var retorno = await iPTURepository.GetByImpostoQuery(consulta);
+            return Ok(retorno);                
 
             // try
             // {
