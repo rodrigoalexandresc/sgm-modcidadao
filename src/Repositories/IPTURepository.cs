@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,6 +28,7 @@ namespace ModCidadao.Repositories {
         }
 
         public async Task<IList<IPTU>> GetByImpostoQuery(ImpostoQuery impostoQuery) {
+            Console.WriteLine("!!! CONEXÃO: " + dbContext.Database.GetConnectionString());
             var data = dbContext.IPTUs.Where(w => impostoQuery.InscricaoImovel == w.InscricaoImovel && impostoQuery.DataConsulta >= w.DataVencimento);
             return await data.ToListAsync();
         }
