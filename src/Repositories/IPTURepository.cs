@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -28,9 +27,19 @@ namespace ModCidadao.Repositories {
         }
 
         public async Task<IList<IPTU>> GetByImpostoQuery(ImpostoQuery impostoQuery) {
-            Console.WriteLine("!!! CONEXÃO: " + dbContext.Database.GetConnectionString());
-            var data = dbContext.IPTUs.Where(w => impostoQuery.InscricaoImovel == w.InscricaoImovel && impostoQuery.DataConsulta >= w.DataVencimento);
-            return await data.ToListAsync();
+            try
+            {
+                var data = dbContext.IPTUs.Where(w => impostoQuery.InscricaoImovel == w.InscricaoImovel && impostoQuery.DataConsulta >= w.DataVencimento);
+                return await data.ToListAsync();                
+            }
+            catch (System.Exception ex)
+            {                
+                var innerEx = (ex.InnerException != null) ? ex.InnerException.Message : "";
+
+                var excecao = $" {dbContext.Database.GetConnectionString()} \n {innerEx} ";
+                throw new System.Exception(excecao);
+            }
+
         }
     }
 }
