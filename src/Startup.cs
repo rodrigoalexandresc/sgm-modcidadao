@@ -53,7 +53,7 @@ namespace ModCidadao
             }
             app.UseDeveloperExceptionPage();
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
 
             app.UseCors(o => o.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
