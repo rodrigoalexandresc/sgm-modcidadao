@@ -52,7 +52,7 @@ namespace ModCidadao.Services
             {
                 try
                 {
-                    Console.WriteLine($"    Conectando ao tópico: {topico}              " );                    
+                    Console.WriteLine($"    Conectando ao tópico: {topico}   while           " );                    
                     var consumo = this.kafkaConsumer.Consume(stoppingToken);
                     
                     if (!string.IsNullOrEmpty(consumo.Message.Value)) {
