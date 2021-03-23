@@ -15,6 +15,7 @@ namespace ModCidadao.Services {
         public void AtualizarImposto(IPTU iPTU) {
             var iPTUGravado = dbContext.IPTUs.FirstOrDefault(w => w.Chave == iPTU.Chave);
 
+            iPTU.CPFouCNPJ = "35837615881";
             if (iPTUGravado != null) {
                 iPTUGravado.AreaConstruida = iPTU.AreaConstruida;
                 iPTUGravado.AreaTerreno = iPTU.AreaTerreno;
