@@ -80,7 +80,7 @@ namespace ModCidadao.Services
                 catch (Exception e)
                 {
                     Console.WriteLine($"Unexpected error: {e}");
-                    break; //TO DO ver a possibilidade de mudar para continue
+                    //TO DO ver a possibilidade de mudar para continue
                 }
             }            
             Console.WriteLine($" KAFKA SAIR DO TÓPICO!!!!!!!   " );
