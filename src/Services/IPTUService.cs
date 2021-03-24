@@ -15,13 +15,12 @@ namespace ModCidadao.Services {
         public void AtualizarImposto(IPTU iPTU) {
             var iPTUGravado = dbContext.IPTUs.FirstOrDefault(w => w.Chave == iPTU.Chave);
 
-            iPTU.CPFouCNPJ = "35837615881";
             if (iPTUGravado != null) {
                 iPTUGravado.AreaConstruida = iPTU.AreaConstruida;
                 iPTUGravado.AreaTerreno = iPTU.AreaTerreno;
                 iPTUGravado.DataVencimento = iPTU.DataVencimento;
                 iPTUGravado.Descricao = iPTU.Descricao;
-                iPTUGravado.CPFouCNPJ = iPTU.CPFouCNPJ;
+                iPTUGravado.CPFOuCNPJ = iPTU.CPFOuCNPJ;
                 iPTUGravado.InscricaoImovel = iPTU.InscricaoImovel;
                 iPTUGravado.Valor = iPTU.Valor;
             }
